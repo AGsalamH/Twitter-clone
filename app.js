@@ -4,7 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 // Import Routes
-const userRoutes = require('./users/routes');
+const authRoutes = require('./users/auth/routes');
 
 // Express app AKA Server
 const app = express();
@@ -16,7 +16,7 @@ app.use(express.urlencoded({extended: false}));
 
 
 // Routes
-app.use('/user', userRoutes);
+app.use(authRoutes);
 
 
 
