@@ -20,8 +20,13 @@ app.use(express.urlencoded({extended: false}));
 app.use(authRoutes);
 app.use(userRoutes);
 
-
-
+// Error handling Middleware
+app.use((error, req, res, next)=>{
+    const statusCode = error.statusCode || 500;
+    res.status(statusCode).json({
+        error: error.message
+    })
+});
 
 const PORT = process.env.PORT || 8080;
 const db = {
