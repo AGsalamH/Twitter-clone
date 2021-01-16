@@ -61,7 +61,7 @@ const login = async(req,res,next)=>{
         const user = await User.findOne({email: email});
         
         if(!user){
-            return res.status(400).json({
+            return res.status(404).json({
                 error: 'This email Doesn\'t Exist'
             });
         }
