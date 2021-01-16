@@ -2,7 +2,7 @@
 -----------------
 ##### For the sake of practicing
 
-- i'm gonna do it inspired by Django architecture
+- i'm trying to do it inspired by Django architecture
     - using the `apps` concept
     - Each app is an independent component and contains its [routes, controllers, models] inside of it.
 
