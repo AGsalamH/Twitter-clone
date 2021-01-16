@@ -13,3 +13,9 @@
 - jsonwebtoken
 - dotenv
 - bcryptjs
+
+
+##### TODO:
+- Upload images
+- Feed
+- DM app
