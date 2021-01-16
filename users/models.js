@@ -20,13 +20,16 @@ const userSchema = new Schema({
         unique: true
     },
     profilePictue: {
-        type: String
+        type: String,
+        default: null
     },
     bio: {
-        type: String
+        type: String,
+        default: null
     },
     city: {
-        type: String
+        type: String,
+        default: null
     },
     followings: [
         {
