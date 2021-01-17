@@ -22,7 +22,7 @@ const loginValidationRules = ()=>{
 
 const tweetValidationRules = ()=>{
     return [
-        
+        check('content').isLength({min:1})
     ]
 }
 
@@ -51,5 +51,6 @@ const validate = (req, res, next) =>{
 module.exports = {
     signupValidationRules,
     loginValidationRules,
+    tweetValidationRules,
     validate
 }
