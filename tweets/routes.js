@@ -10,8 +10,8 @@ const {validate, tweetValidationRules} = require('../utils/validation');
         - POST /tweet
         - DELETE /tweet
 */
-router.get('/tweet', controller.getTweet);
-router.post('/tweet',tweetValidationRules, validate, controller.createTweet);
+router.get('/tweet/:tweetID', controller.getTweet);
+router.post('/tweet',tweetValidationRules(), validate, controller.createTweet);
 router.delete('/tweet', controller.deleteTweet);
 
 /*
@@ -24,14 +24,13 @@ router.delete('/tweet', controller.deleteTweet);
         - POST /reply
 */
 router.post('/like', actions.like);
-router.post('/dislike', actions.unlike);
+router.post('/dislike', actions.dislike);
 
 router.post('/retweet', actions.retweet);
 router.post('/undo', actions.undo);
 
 router.post('/quote', actions.quote);
 router.post('/reply', actions.reply);
-
 
 
 
