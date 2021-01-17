@@ -8,6 +8,6 @@ const isAuth = require('./auth/isAuth');
 */
 
 router.post('/follow', isAuth, follow);
-router.post('/unfollow', isAuth, follow);
+router.post('/unfollow', isAuth, unfollow);
 
 module.exports = router;
