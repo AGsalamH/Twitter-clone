@@ -14,6 +14,22 @@ router.get('/tweet/:tweetID', controller.getTweet);
 router.post('/tweet',tweetValidationRules(), validate, controller.createTweet);
 router.delete('/tweet', controller.deleteTweet);
 
+
+/*
+    Retrieving Tweets for the Loggedin User:
+        - GET /all
+        - GET /retweets
+        - GET /quotes
+        - GET /likes
+        - GET /replies
+*/
+router.get('/all', controller.getAll);
+router.get('/retweets', controller.getAllRetweets);
+router.get('/quotes', controller.getQuotes);
+router.get('/likes', controller.getLikes);
+router.get('/replies', controller.getReplies);
+
+
 /*
     Actions Routes:
         - POST /like
