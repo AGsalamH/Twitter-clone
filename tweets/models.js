@@ -44,7 +44,7 @@ const tweetSchema = new Schema({
         }
     ],
 
-    retweetes: [
+    retweets: [
         {
             type: Schema.Types.ObjectId,
             ref: 'User'
