@@ -16,7 +16,6 @@
 
 
 ##### TODO:
-- Fix tweets actions to work with the new Tweet Model
 - Upload images
 - Feed
 - DM app
