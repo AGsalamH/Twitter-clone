@@ -17,26 +17,26 @@ const createTweet = async (req, res, next) =>{
 }
 
 // Returns all Tweets and retweets for the loggedIn user 
-const getAllTweetsAndRetweets = async (req, res, next)=>{
-    try {  
-        const tweets = await Tweet.find({$or: [{creator: req.user._id}, {retweets: req.user._id} ] }).lean();
-        res.status(200).json({
-            tweets,
-        });
-    } catch (error) {
-        next(error);
-    }
-}
+// const getAllTweetsAndRetweets = async (req, res, next)=>{
+//     try {  
+//         const tweets = await Tweet.find({$or: [{creator: req.user._id}, {retweets: req.user._id} ] }).lean();
+//         res.status(200).json({
+//             tweets,
+//         });
+//     } catch (error) {
+//         next(error);
+//     }
+// }
 
-// Returns all Tweets for the loggedIn user 
-const getAllTweets = async (req, res, next)=>{
+
+// Returns all Tweets, Retweets, Replies and Quotes
+const getAll = async (req, res, next)=>{
     try {  
-        const tweets = await Tweet.find({creator: req.user._id }).lean();
+        const tweets = await Tweet.find({$or: [{creator: req.user._id }, {retweets: req.user._id}]}).lean();
         res.status(200).json({
             tweets,
         });
     } catch (error) {
-        error.statusCode = 500;
         next(error);
     }
 }
@@ -100,7 +100,7 @@ const deleteTweet = async (req, res, next)=>{
 // Return all Replies for the loggedin user
 const getReplies = async (req, res, next)=>{
     try {
-        const replies = await Tweet.find({isReply: true}).lean();
+        const replies = await Tweet.find({isReply: true, creator: req.user._id}).lean();
         res.status(200).json({
             msg: 'All replies',
             replies
@@ -114,7 +114,7 @@ const getReplies = async (req, res, next)=>{
 // Return all Quotes for the loggedin user
 const getQuotes = async (req, res, next)=>{
     try {
-        const quotes = await Tweet.find({isQuote: true}).lean();
+        const quotes = await Tweet.find({isQuote: true, creator: req.user._id}).lean();
         res.status(200).json({
             msg: 'All Quotes',
             quotes
@@ -142,8 +142,8 @@ const getLikes = async (req, res, next)=>{
 module.exports = {
     createTweet,
 
-    getAllTweetsAndRetweets,
-    getAllTweets,
+    // getAllTweetsAndRetweets,
+    getAll,
     getAllRetweets,
     getTweet,
 
