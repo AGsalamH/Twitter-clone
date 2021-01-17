@@ -54,9 +54,9 @@ const getAllRetweets = async (req, res, next)=>{
     }
 }
 
-// Returns certain Tweet with tweetID in req.body
+// Returns certain Tweet with tweetID as a parameter
 const getTweet = async (req, res, next)=>{
-    const tweetID = req.body.tweetID;
+    const tweetID = req.params.tweetID;
     try {
         const tweet = await Tweet.findOne({_id: tweetID}).lean();
         if(!tweet){

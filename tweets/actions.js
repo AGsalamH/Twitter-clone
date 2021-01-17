@@ -13,7 +13,7 @@ const like = async (req, res, next) => {
         }
 
         // check if user already likes it
-        const userIndex = tweet.likedBy.findIndex(v=>v.toString() === req.user._id.toString());
+        const userIndex = tweet.likes.findIndex(v=>v.toString() === req.user._id.toString());
         if(userIndex !== -1){
             const error = new Error('This user already likes This tweet');
             error.statusCode = 400;
@@ -22,8 +22,7 @@ const like = async (req, res, next) => {
 
         // Here ... Tweet Exist
         // Let's do the Like functionality
-        tweet.likedBy.push(req.user._id);
-        tweet.likes += 1;
+        tweet.likes.push(req.user._id);
         const likedTweet = await tweet.save();
         res.status(200).json({
             msg: 'liked (u)',
@@ -36,7 +35,7 @@ const like = async (req, res, next) => {
 }
 
 // unlike Tweet with ID sent in req.body
-const unlike = async (req, res, next) => {
+const dislike = async (req, res, next) => {
     const tweetID = req.body.tweetID;
     try {
         const tweet = await Tweet.findById(tweetID);
@@ -48,20 +47,19 @@ const unlike = async (req, res, next) => {
         }
         // Here ... Tweet Exist
         // lets check if the user already likes it
-        const userIndex = tweet.likedBy.findIndex(v=>v.toString() === req.user._id.toString());
+        const userIndex = tweet.likes.findIndex(v=>v.toString() === req.user._id.toString());
         if(userIndex === -1){
             const error = new Error('This user doesn\'t even like This tweet');
             error.statusCode = 400;
             throw error;
         }
 
-        // Let's do the unlike functionality
-        tweet.likedBy.splice(userIndex, 1);
-        tweet.likes -= 1;
+        // Let's do the dislike functionality
+        tweet.likes.splice(userIndex, 1);
 
         const unlikedTweet = await tweet.save();
         res.status(200).json({
-            msg: 'Tweet unliked (u)',
+            msg: 'Tweet disliked (u)',
             unlikedTweet
         })        
 
@@ -81,19 +79,17 @@ const retweet = async (req, res, next) =>{
             error.statusCode = 404;
             throw error;
         }
-
-        //Check if user already retweets this tweet
-        const alreadyRetweeted = tweet.retweetedBy.findIndex(v=> v.toString() === req.user._id.toString());
+        
+        // Check if user already retweets this tweet
+        const alreadyRetweeted = tweet.retweets.findIndex(v=> v.toString() === req.user._id.toString());
         if(alreadyRetweeted !== -1){
-            const error = new Error("Tweet already retweeted!");
+            const error = new Error("You already retweeted this!");
             error.statusCode = 400;
             throw error;            
         }
         
         // Lets retweet
-        tweet.retweetedBy.push(req.user._id);
-        tweet.retweets += 1;
-
+        tweet.retweets.push(req.user._id);
         const savedTweet = await tweet.save();
 
         res.status(200).json({
@@ -120,7 +116,7 @@ const undo = async (req, res, next) =>{
         // Here Tweet Exists ....
 
         //Check if user already retweets this tweet
-        const userIndex = tweet.retweetedBy.findIndex(v=> v.toString() === req.user._id.toString());
+        const userIndex = tweet.retweets.findIndex(v=> v.toString() === req.user._id.toString());
         if(userIndex === -1){
             const error = new Error("You can\'t undo retweet this Tweet");
             error.statusCode = 400;
@@ -128,8 +124,7 @@ const undo = async (req, res, next) =>{
         }        
 
         // Let's undo retweet this ....
-        tweet.retweets -= 1;
-        tweet.retweetedBy.splice(userIndex, 1);
+        tweet.retweets.splice(userIndex, 1);
 
         const savedTweet = await tweet.save();
 
@@ -161,7 +156,6 @@ const reply = async (req, res, next) =>{
         const reply = new Tweet({
             content: req.body.content,
             creator: req.user._id,
-            imageUrl: req.body.imageUrl || null,
             isReply: true
         });
 
@@ -185,7 +179,7 @@ const reply = async (req, res, next) =>{
 
 // Consider u dont have a separate model for quotes
 // Everythin in the Tweet model
-// cuz all replies and quotes are Tweets -_-
+// cuz both replies and quotes are Tweets -_-
 const quote = async (req, res, next) =>{
     const tweetID = req.body.tweetID;
     try {
@@ -199,12 +193,19 @@ const quote = async (req, res, next) =>{
 
         const quote = new Tweet({
             content: req.body.content,
-            
-
+            creator: req.user._id,
+            isQuote: true
         });
 
+        const savedQuote = await quote.save();
+        tweet.quotes.push(savedQuote._id);
+        const savedTweet = await tweet.save();
 
-
+        res.status(201).json({
+            msg: 'Tweet Quoted :)',
+            tweet: savedTweet,
+            quote: savedQuote
+        })
 
     } catch (error) {
         next(error);
@@ -213,11 +214,11 @@ const quote = async (req, res, next) =>{
 
 module.exports = {
     like,
-    unlike,
+    dislike,
 
     retweet,
     undo,
 
     quote,
-   reply,
+    reply,
 }
