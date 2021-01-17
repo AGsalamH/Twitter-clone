@@ -6,6 +6,11 @@ const mongoose = require('mongoose');
 // Import Routes
 const authRoutes = require('./users/auth/routes');
 const userRoutes = require('./users/routes');
+const tweetRoutes = require('./tweets/routes');
+
+
+// Utils
+const isAuth = require('./users/auth/isAuth');
 
 // Express app AKA Server
 const app = express();
@@ -18,7 +23,8 @@ app.use(express.urlencoded({extended: false}));
 
 // Routes
 app.use(authRoutes);
-app.use(userRoutes);
+app.use(isAuth, userRoutes);
+app.use(isAuth, tweetRoutes);
 
 // Error handling Middleware
 app.use((error, req, res, next)=>{
