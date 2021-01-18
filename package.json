@@ -1,9 +1,12 @@
 {
-  "name": "twitter-clon",
+  "name": "twitter-clone",
   "version": "1.0.0",
   "description": "Twitter clone",
   "main": "app.js",
-  "scripts": {},
+  "scripts": {
+    "dev": "nodemon app",
+    "start": "node app"
+  },
   "keywords": [],
   "author": "AGsalamH",
   "license": "ISC",
@@ -13,6 +16,8 @@
     "express": "^4.17.1",
     "express-validator": "^6.9.2",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.11.12"
+    "mongoose": "^5.11.12",
+    "multer": "^1.4.2",
+    "uniqid": "^5.2.0"
   }
 }
