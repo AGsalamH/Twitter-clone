@@ -13,6 +13,8 @@
 - jsonwebtoken
 - dotenv
 - bcryptjs
+- multer
+- uniqid
 
 
 ##### TODO:
