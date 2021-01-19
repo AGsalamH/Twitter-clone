@@ -18,6 +18,5 @@
 
 
 ##### TODO:
-- Upload images
 - Feed
 - DM app
