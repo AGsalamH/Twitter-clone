@@ -1,4 +1,4 @@
-const Tweet = require('./models');
+const Tweet = require('./tweetModel');
 
 const createTweet = async (req, res, next) =>{
     try {

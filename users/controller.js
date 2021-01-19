@@ -1,5 +1,4 @@
 const User = require('./userModel');
-const Tweet = require('../tweets/models');
 // Done
     // Follow
     // Unfollow

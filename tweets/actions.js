@@ -1,4 +1,4 @@
-const Tweet = require('./models');
+const Tweet = require('./tweetModel');
 
 // Like Tweet with ID sent in req.body
 const like = async (req, res, next) => { 
