@@ -6,7 +6,7 @@ const {validate, tweetValidationRules} = require('../utils/validation');
 
 /*
     Tweet Routes:
-        - GET /tweet
+        - GET /tweet/:tweetID
         - POST /tweet
         - DELETE /tweet
 */
