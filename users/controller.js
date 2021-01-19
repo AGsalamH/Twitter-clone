@@ -104,7 +104,21 @@ const unfollow = async (req, res, next) => {
 
 }
 
+// Get user info
+// Needed for Feed 
+const userInfo = async (req, res, next) =>{
+    try {
+        const user = await User.findById(req.user._id);
+        res.status(200).json({
+            user
+        });
+    } catch (error) {
+        next(err);
+    }
+}
+
 module.exports = {
     follow,
     unfollow,
+    userInfo
 }
