@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const {login, signup} = require('./authentication'); 
 const {loginValidationRules, signupValidationRules, validate} = require('../../utils/validation')
+const {uploadAvatar} = require('../../utils/upload');
+
 /*
     Auth Routes:
         - /login
@@ -8,7 +10,7 @@ const {loginValidationRules, signupValidationRules, validate} = require('../../u
 */
 
 router.post('/login', loginValidationRules(), validate, login);
-router.post('/signup', signupValidationRules(), validate, signup);
+router.post('/signup', signupValidationRules(), validate, uploadAvatar, signup);
 
 
 module.exports = router;

@@ -1,10 +1,15 @@
 const Tweet = require('./tweetModel');
 
 const createTweet = async (req, res, next) =>{
+    let imageUrl;
     try {
+        if(req.file){
+            imageUrl = rep.file.path;
+        }
         const tweet = new Tweet({
             content: req.body.content,
             creator: req.user._id,
+            imageUrl: imageUrl || null
         });
         const savedTweet = await tweet.save();
         res.status(201).json({

@@ -12,7 +12,12 @@ const signup = async (req, res, next) => {
     // Optional
     const bio = req.body.bio || null;
     const city = req.body.city || null;
-    const profilePictue = req.body.profilePictue || null;
+    let profilePictue;
+
+    //Handling image upload
+    if(req.file){
+        profilePictue = req.file.path;
+    }
 
     try {
         // Check If user already exists

@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const controller = require('./controller');
 const actions = require('./actions');
-
+const {uploadTweet} = require('../utils/upload');
 const {validate, tweetValidationRules} = require('../utils/validation');
 
 /*
@@ -11,7 +11,7 @@ const {validate, tweetValidationRules} = require('../utils/validation');
         - DELETE /tweet
 */
 router.get('/tweet/:tweetID', controller.getTweet);
-router.post('/tweet',tweetValidationRules(), validate, controller.createTweet);
+router.post('/tweet',tweetValidationRules(), validate,uploadTweet, controller.createTweet);
 router.delete('/tweet', controller.deleteTweet);
 
 
