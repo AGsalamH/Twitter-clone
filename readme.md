@@ -1,6 +1,6 @@
 ### Twitter Clone
 -----------------
-##### For the sake of practicing
+##### For practicing
 
 - i'm trying to do it inspired by Django architecture
     - using the `apps` concept
