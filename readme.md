@@ -14,8 +14,9 @@
 - dotenv
 - bcryptjs
 - multer
-- uniqid
-
+- moment
+- morgan
+- shortid
 
 ##### TODO:
 - Feed
