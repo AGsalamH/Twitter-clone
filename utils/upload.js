@@ -1,5 +1,5 @@
 const multer = require('multer');
-const uniqid = require('uniqid');
+const generateID  = require('shortid').generate;
 
 //Multer options AKA upload
 const tweetStorage = multer.diskStorage({
@@ -9,7 +9,7 @@ const tweetStorage = multer.diskStorage({
 
 const avatarStorage = multer.diskStorage({
     destination: (req, file, cb) => cb(null, `${process.env.DIRNAME}/public/avatars`),
-    filename: (req, file, cb) => cb(null, `${uniqid('avtar-')}${file.originalname}`)
+    filename: (req, file, cb) => cb(null, `${generateID(4)}${file.originalname}`)
 });
 
 const fileFilter = (req, file, cb) =>{
