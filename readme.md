@@ -19,5 +19,7 @@
 - shortid
 
 ##### TODO:
+- fix error handling
+- some code refactoring
 - Feed
 - DM app
