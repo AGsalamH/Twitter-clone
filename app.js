@@ -9,6 +9,8 @@ const authRoutes = require('./users/auth/routes');
 const userRoutes = require('./users/routes');
 const tweetRoutes = require('./tweets/routes');
 
+// Import Middleware
+const {urlNotFound, globalErrorHandling} = require('./middlewares/errorHandling');
 
 // Utils
 const isAuth = require('./users/auth/isAuth');
@@ -27,27 +29,22 @@ app.use(authRoutes);
 app.use(isAuth, userRoutes);
 app.use(isAuth, tweetRoutes);
 
-// Error handling Middleware
-app.use((error, req, res, next)=>{
-    const statusCode = error.statusCode || 500;
-    res.status(statusCode).json({
-        error: error.message
-    })
-});
+// 404
+// Must be beneath all routes
+app.use(urlNotFound);
+// All Errors are passed here to it.
+app.use(globalErrorHandling);
+
 
 const PORT = process.env.PORT || 8080;
-const db = {
-    options: {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useCreateIndex: true
-    }
-};
-
 // DB connection 
 //Running the Server 
 (async ()=>{
-    await mongoose.connect(process.env.MONGO_URI, db.options);
+    await mongoose.connect(process.env.MONGO_URI, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true
+    });
     console.log('MongoDB Connected ... ');
     app.listen(PORT, () => console.log(`Server is Running on PORT : ${PORT}`));
 })()

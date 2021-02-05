@@ -1,9 +1,9 @@
 const router = require('express').Router();
 const controller = require('./controller');
 const actions = require('./actions');
-const {uploadTweet} = require('../utils/upload');
-const {validate, tweetValidationRules} = require('../utils/validation');
-
+const {uploadTweet} = require('../middlewares/upload');
+const {tweetValidationRules} = require('../utils/validation');
+const validate = require('../middlewares/validate');
 /*
     Tweet Routes:
         - GET /tweet/:tweetID
