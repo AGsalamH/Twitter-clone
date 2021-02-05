@@ -7,7 +7,7 @@
     - Each app is an independent component and contains its [routes, controllers, models] inside of it.
 
 
-##### Packages used yet
+##### Dependencies
 - express
 - mongoose
 - jsonwebtoken
