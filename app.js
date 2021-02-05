@@ -32,7 +32,8 @@ app.use(isAuth, tweetRoutes);
 // 404
 // Must be beneath all routes
 app.use(urlNotFound);
-// All Errors are passed here to it.
+
+// All Errors are passed to it.
 app.use(globalErrorHandling);
 
 

@@ -1,15 +1,5 @@
 const User = require('./userModel');
-// Done
-    // Follow
-    // Unfollow
-    // Like 
-    // unlike
-    // Retweet
-    // undo
-
-// TODO
-    // Reply
-
+const {isMongooseError, _throw} = require('../utils/errorHandling');
 
 // Follow Functionality by sending username in req.body
 const follow = async (req, res, next) =>{
@@ -19,7 +9,7 @@ const follow = async (req, res, next) =>{
         if (req.body.username === req.user.username) {
             const error = new Error('You Can\'t Follow or Unfollow Yourself!!!');
             error.statusCode = 400;
-            throw error;
+            return next(error);
         }
 
         // Check if user exists
@@ -27,7 +17,7 @@ const follow = async (req, res, next) =>{
         if (!user) {
             const error = new Error('This user Doesn\'t Exist');
             error.statusCode = 404;
-            throw error;
+            return next(error);
         }
         // Here..., user exists
         // Lets Check if the loggedin user is already following this user
@@ -52,8 +42,8 @@ const follow = async (req, res, next) =>{
             msg: `${req.user.username} is now following ${user.username}`
         });
 
-    } catch (error) {
-        next(error);
+    } catch (err) {
+        isMongooseError(err) ? next(err) : _throw(err);
     }
 }
 
@@ -65,7 +55,7 @@ const unfollow = async (req, res, next) => {
         if (req.body.username === req.user.username) {
             const error = new Error('You Can\'t Follow or Unfollow Yourself!!!');
             error.statusCode = 400;
-            throw error;
+            return next(error);
         }
 
         // Check if This user exists
@@ -73,7 +63,7 @@ const unfollow = async (req, res, next) => {
         if (!user) {
             const error = new Error('This user Doesn\'t Exist');
             error.statusCode = 404;
-            throw error;
+            return next(error);
         }
 
         // Here .... User exists
@@ -85,7 +75,7 @@ const unfollow = async (req, res, next) => {
         if(userIndexFollowings === -1 || userIndexFollowers == -1){
             const error = new Error(`You Don't Even Follow ${user.username} To Unfollow`);
             error.statusCode = 400;
-            throw error;
+            return next(error);
         }
 
         // Here .. U do follow this user
@@ -98,8 +88,8 @@ const unfollow = async (req, res, next) => {
             msg: `You Unfollowed ${user.username}`
         });
 
-    } catch (error) {
-        next(error);
+    } catch (err) {
+        isMongooseError(err) ? next(err) : _throw(err);
     }
 
 }
@@ -112,8 +102,8 @@ const userInfo = async (req, res, next) =>{
         res.status(200).json({
             user
         });
-    } catch (error) {
-        next(err);
+    } catch (err) {
+        isMongooseError(err) ? next(err) : _throw(err);
     }
 }
 

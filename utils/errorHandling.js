@@ -23,6 +23,7 @@ const _throw = err =>{
 module.exports = {
     isMongooseError,
     jwtError,
-
+    _throw,
+    
     mongooseError
 }
