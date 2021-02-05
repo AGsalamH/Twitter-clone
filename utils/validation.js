@@ -1,5 +1,4 @@
-const {check, validationResult} = require('express-validator');
-
+const {check} = require('express-validator');
 
 const signupValidationRules = () => {
     return [
@@ -12,7 +11,6 @@ const signupValidationRules = () => {
     ]
 }
 
-
 const loginValidationRules = ()=>{
     return [
         check('email').notEmpty().isEmail(),
@@ -22,35 +20,13 @@ const loginValidationRules = ()=>{
 
 const tweetValidationRules = ()=>{
     return [
-        check('content').isLength({min:1})
+        check('content', 'Can\'t be empty').isLength({min:1})
     ]
 }
 
 
-
-
-const validate = (req, res, next) =>{
-    const errors = validationResult(req);
-    
-    // If No Errors 
-    if (errors.isEmpty()) {
-        return next();
-    }
-
-    // Catch  errors!!
-    
-    const exractedErrors = [];
-    
-    errors.array().map(err=> exractedErrors.push({[err.param] : err.msg}));
-
-    res.status(422).json({
-        errors: exractedErrors
-    });
-}
-
 module.exports = {
     signupValidationRules,
     loginValidationRules,
-    tweetValidationRules,
-    validate
+    tweetValidationRules
 }
