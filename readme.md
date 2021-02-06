@@ -1,12 +1,5 @@
 ### Twitter Clone
 -----------------
-##### For practicing
-
-- i'm trying to do it inspired by Django architecture
-    - using the `apps` concept
-    - Each app is an independent component and contains its [routes, controllers, models] inside of it.
-
-
 ##### Dependencies
 - express
 - mongoose
@@ -19,7 +12,5 @@
 - shortid
 
 ##### TODO:
-- fix error handling
 - some code refactoring
-- Feed
 - DM app
