@@ -5,17 +5,15 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 // Import Routes
-const authRoutes = require('./users/auth/routes');
-const userRoutes = require('./users/routes');
-const tweetRoutes = require('./tweets/routes');
+const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
+const tweetRoutes = require('./routes/tweet');
 
 // Import Middleware
 const {urlNotFound, globalErrorHandling} = require('./middlewares/errorHandling');
+const isAuth = require('./middlewares/isAuth');
 
-// Utils
-const isAuth = require('./users/auth/isAuth');
-
-// Express app AKA Server
+// Instantiate express app
 const app = express();
 
 

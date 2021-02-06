@@ -1,6 +1,6 @@
-const User = require('../userModel');
-const jwt=require('jsonwebtoken');
-const {isMongooseError, jwtError, _throw} = require('../../utils/errorHandling');
+const User = require('../models/user');
+const jwt = require('jsonwebtoken');
+const {isMongooseError, jwtError, _throw} = require('../utils/errorHandling');
 
 // POST /signup
 const signup = async (req, res, next) =>{

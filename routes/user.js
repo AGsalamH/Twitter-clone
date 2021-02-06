@@ -1,6 +1,6 @@
 const router = require('express').Router();
-const {follow, unfollow, userInfo} = require('./controller');
-const isAuth = require('./auth/isAuth');
+const {follow, unfollow, userInfo} = require('../controllers/users');
+const isAuth = require('../middlewares/isAuth');
 /*
     User Routes:
         - POST /follow

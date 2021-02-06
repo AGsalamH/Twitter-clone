@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
-const { isMongooseError, jwtError, _throw } = require('../../utils/errorHandling');
-const User = require('../userModel');
+const { isMongooseError, jwtError, _throw } = require('../utils/errorHandling');
+const User = require('../models/user');
 
 module.exports = async (req, res, next) =>{
     const token = req.get('auth-token');

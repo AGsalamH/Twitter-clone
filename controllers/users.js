@@ -1,4 +1,4 @@
-const User = require('./userModel');
+const User = require('../models/user');
 const {isMongooseError, _throw} = require('../utils/errorHandling');
 
 // Follow Functionality by sending username in req.body

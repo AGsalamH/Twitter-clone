@@ -1,4 +1,4 @@
-const Tweet = require('./tweetModel');
+const Tweet = require('../models/tweet');
 const { isMongooseError, _throw } = require('../utils/errorHandling');
 
 const createTweet = async (req, res, next) =>{
