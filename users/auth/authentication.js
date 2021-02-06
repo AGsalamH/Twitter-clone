@@ -1,5 +1,6 @@
 const User = require('../userModel');
 const jwt=require('jsonwebtoken');
+const {isMongooseError, jwtError, _throw} = require('../../utils/errorHandling');
 
 // POST /signup
 const signup = async (req, res, next) =>{
@@ -32,8 +33,8 @@ const signup = async (req, res, next) =>{
             msg: 'user created successfully :)',
             userId: savedUser._id
         });        
-    } catch (error) {
-        next(error);
+    } catch (err) {
+        isMongooseError(err) ? next(err) : _throw(err);
     }    
 }
 
@@ -56,8 +57,8 @@ const login = async (req,res,next) =>{
         res.header('auth-token', token);
         return res.status(200).json({msg: 'Logged in'});
         
-    } catch (error) {
-        next(error);
+    } catch (err) {
+        isMongooseError(err) || jwtError(err) ? next(err) : _throw(err);
     }   
 }
 
