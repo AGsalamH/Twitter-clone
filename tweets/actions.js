@@ -1,4 +1,5 @@
 const Tweet = require('./tweetModel');
+const {isMongooseError, _throw} = require('../utils/errorHandling');
 
 // Like Tweet with ID sent in req.body
 const like = async (req, res, next) => { 
@@ -9,7 +10,7 @@ const like = async (req, res, next) => {
         if(!tweet){
             const error = new Error('No Tweet Found');
             error.statusCode = 404;
-            throw error;   
+            return next(error);   
         }
 
         // check if user already likes it
@@ -17,7 +18,7 @@ const like = async (req, res, next) => {
         if(userIndex !== -1){
             const error = new Error('This user already likes This tweet');
             error.statusCode = 400;
-            throw error;
+            return next(error);
         }
 
         // Here ... Tweet Exist
@@ -28,8 +29,8 @@ const like = async (req, res, next) => {
             msg: 'liked (u)',
             likedTweet
         })
-    } catch (error) {
-        next(error);
+    } catch (err) {
+        isMongooseError(err) ? next(err) : _throw(err);
     }
 
 }
@@ -43,7 +44,7 @@ const dislike = async (req, res, next) => {
         if(!tweet){
             const error = new Error('No Tweet Found');
             error.statusCode = 404;
-            throw error;   
+            return next(error);   
         }
         // Here ... Tweet Exist
         // lets check if the user already likes it
@@ -51,7 +52,7 @@ const dislike = async (req, res, next) => {
         if(userIndex === -1){
             const error = new Error('This user doesn\'t even like This tweet');
             error.statusCode = 400;
-            throw error;
+            return next(error);   
         }
 
         // Let's do the dislike functionality
@@ -63,9 +64,9 @@ const dislike = async (req, res, next) => {
             unlikedTweet
         })        
 
-    } catch(error){
-        next(error);
-    } 
+    } catch (err) {
+        isMongooseError(err) ? next(err) : _throw(err);
+    }
 }
 
 // retweet Tweet with ID sent in req.body
@@ -77,7 +78,7 @@ const retweet = async (req, res, next) =>{
         if (!tweet) {
             const error = new Error("Tweet Not Found");
             error.statusCode = 404;
-            throw error;
+            return next(error);   
         }
         
         // Check if user already retweets this tweet
@@ -85,7 +86,7 @@ const retweet = async (req, res, next) =>{
         if(alreadyRetweeted !== -1){
             const error = new Error("You already retweeted this!");
             error.statusCode = 400;
-            throw error;            
+            return next(error);   
         }
         
         // Lets retweet
@@ -96,8 +97,8 @@ const retweet = async (req, res, next) =>{
             msg: 'Retweeted :)',
             tweet: savedTweet
         })
-    } catch (error) {
-        next(error);
+    } catch (err) {
+        isMongooseError(err) ? next(err) : _throw(err);
     }
 }
 
@@ -111,7 +112,7 @@ const undo = async (req, res, next) =>{
         if (!tweet) {
             const error = new Error("Tweet Not Found");
             error.statusCode = 404;
-            throw error;
+            return next(error);   
         }
         // Here Tweet Exists ....
 
@@ -120,7 +121,7 @@ const undo = async (req, res, next) =>{
         if(userIndex === -1){
             const error = new Error("You can\'t undo retweet this Tweet");
             error.statusCode = 400;
-            throw error;            
+            return next(error);   
         }        
 
         // Let's undo retweet this ....
@@ -133,8 +134,8 @@ const undo = async (req, res, next) =>{
             tweet: savedTweet
         });
 
-    } catch (error) {
-        next(error);
+    } catch (err) {
+        isMongooseError(err) ? next(err) : _throw(err);
     }
 }
 
@@ -148,7 +149,7 @@ const reply = async (req, res, next) =>{
         if (!tweet) {
             const error = new Error('Tweet you trying to reply on does NOT exist ...');
             error.statusCode = 404;
-            throw error;
+            return next(error);   
         }
 
         // Here Tweet Exists 
@@ -171,8 +172,8 @@ const reply = async (req, res, next) =>{
             tweet: tweet,
             reply: savedReply
         });
-    } catch (error) {
-        next(error);
+    } catch (err) {
+        isMongooseError(err) ? next(err) : _throw(err);
     }
 }
 
@@ -188,7 +189,7 @@ const quote = async (req, res, next) =>{
         if (!tweet) {
             const error = new Error('Tweet you trying to Quote on does NOT exist ...');
             error.statusCode = 404;
-            throw error;
+            return next(error);   
         }
 
         const quote = new Tweet({
@@ -207,8 +208,8 @@ const quote = async (req, res, next) =>{
             quote: savedQuote
         })
 
-    } catch (error) {
-        next(error);
+    } catch (err) {
+        isMongooseError(err) ? next(err) : _throw(err);
     }
 }
 

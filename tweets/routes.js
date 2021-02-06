@@ -11,7 +11,7 @@ const validate = require('../middlewares/validate');
         - DELETE /tweet
 */
 router.get('/tweet/:tweetID', controller.getTweet);
-router.post('/tweet',tweetValidationRules(), validate,uploadTweet, controller.createTweet);
+router.post('/tweet',tweetValidationRules(), validate, uploadTweet, controller.createTweet);
 router.delete('/tweet', controller.deleteTweet);
 
 

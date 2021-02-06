@@ -1,4 +1,5 @@
 const Tweet = require('./tweetModel');
+const { isMongooseError, _throw } = require('../utils/errorHandling');
 
 const createTweet = async (req, res, next) =>{
     let imageUrl;
@@ -16,8 +17,8 @@ const createTweet = async (req, res, next) =>{
             msg: 'Tweet Created :)',
             tweet: savedTweet
         })
-    } catch (error) {
-        next(error);
+    } catch (err) {
+        isMongooseError(err) ? next(err) : _throw(err);
     }
 }
 
@@ -41,8 +42,8 @@ const getAll = async (req, res, next)=>{
         res.status(200).json({
             tweets,
         });
-    } catch (error) {
-        next(error);
+    } catch (err) {
+        isMongooseError(err) ? next(err) : _throw(err);
     }
 }
 
@@ -54,8 +55,8 @@ const getAllRetweets = async (req, res, next)=>{
         res.status(200).json({
             tweets,
         });
-    } catch (error) {
-        next(error);
+    } catch (err) {
+        isMongooseError(err) ? next(err) : _throw(err);
     }
 }
 
@@ -67,14 +68,14 @@ const getTweet = async (req, res, next)=>{
         if(!tweet){
             const error = new Error("No Tweet Found");
             error.statusCode = 404;
-            throw error;
+            return next(error);
         }
         res.status(200).json({
             tweet
         });
         
-    } catch (error) {
-        next(error);
+    } catch (err) {
+        isMongooseError(err) ? next(err) : _throw(err);
     }
 }
 
@@ -88,7 +89,7 @@ const deleteTweet = async (req, res, next)=>{
         if (!tweet) {
             const error = new Error('No Tweet matches this ID to Delete');
             error.statusCode = 404;
-            throw error;
+            return next(error);
         }
         const deleteCursor = await Tweet.deleteOne({_id: tweet._id});
         res.status(200).json({
@@ -97,8 +98,8 @@ const deleteTweet = async (req, res, next)=>{
             deletedTweet: tweet
         });
         
-    } catch (error) {
-        next(error);
+    } catch (err) {
+        isMongooseError(err) ? next(err) : _throw(err);
     }
 
 }
@@ -111,8 +112,8 @@ const getReplies = async (req, res, next)=>{
             replies
         });
 
-    } catch (error) {
-        next(error);
+    } catch (err) {
+        isMongooseError(err) ? next(err) : _throw(err);
     }
 }
 
@@ -125,8 +126,8 @@ const getQuotes = async (req, res, next)=>{
             quotes
         });
 
-    } catch (error) {
-        next(error);
+    } catch (err) {
+        isMongooseError(err) ? next(err) : _throw(err);
     }
 }
 // Get All Tweets user likes
@@ -137,9 +138,8 @@ const getLikes = async (req, res, next)=>{
             msg: 'All likes',
             likes
         });
-
-    } catch (error) {
-        next(error);
+    } catch (err) {
+        isMongooseError(err) ? next(err) : _throw(err);
     }
 }
 
