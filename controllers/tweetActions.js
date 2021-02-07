@@ -1,5 +1,6 @@
 const Tweet = require('../models/tweet');
 const {isMongooseError, _throw} = require('../utils/errorHandling');
+const {throwTweetError} = require('../utils/tweets');
 
 // Like Tweet with ID sent in req.body
 const like = async (req, res, next) => { 
@@ -8,17 +9,13 @@ const like = async (req, res, next) => {
         const tweet = await Tweet.findById(tweetID);
         // Check if tweet exists
         if(!tweet){
-            const error = new Error('No Tweet Found');
-            error.statusCode = 404;
-            return next(error);   
+            return throwTweetError(next);
         }
 
         // check if user already likes it
         const userIndex = tweet.likes.findIndex(v=>v.toString() === req.user._id.toString());
         if(userIndex !== -1){
-            const error = new Error('This user already likes This tweet');
-            error.statusCode = 400;
-            return next(error);
+            return throwTweetError(next, 'This user already likes This tweet', 400);
         }
 
         // Here ... Tweet Exist
@@ -42,17 +39,13 @@ const dislike = async (req, res, next) => {
         const tweet = await Tweet.findById(tweetID);
         // Check if tweet exists
         if(!tweet){
-            const error = new Error('No Tweet Found');
-            error.statusCode = 404;
-            return next(error);   
+            return throwTweetError(next); 
         }
         // Here ... Tweet Exist
         // lets check if the user already likes it
         const userIndex = tweet.likes.findIndex(v=>v.toString() === req.user._id.toString());
         if(userIndex === -1){
-            const error = new Error('This user doesn\'t even like This tweet');
-            error.statusCode = 400;
-            return next(error);   
+            return throwTweetError(next, 'This user doesn\'t even like This tweet', 400);
         }
 
         // Let's do the dislike functionality
@@ -76,17 +69,13 @@ const retweet = async (req, res, next) =>{
         // Check if tweet exists
         const tweet = await Tweet.findById(tweetID);
         if (!tweet) {
-            const error = new Error("Tweet Not Found");
-            error.statusCode = 404;
-            return next(error);   
+            return throwTweetError(next); 
         }
         
         // Check if user already retweets this tweet
         const alreadyRetweeted = tweet.retweets.findIndex(v=> v.toString() === req.user._id.toString());
         if(alreadyRetweeted !== -1){
-            const error = new Error("You already retweeted this!");
-            error.statusCode = 400;
-            return next(error);   
+            return throwTweetError(next, 'You already retweeted this!', 400);
         }
         
         // Lets retweet
@@ -110,18 +99,14 @@ const undo = async (req, res, next) =>{
         // Check if tweet exists
         const tweet = await Tweet.findById(tweetID);
         if (!tweet) {
-            const error = new Error("Tweet Not Found");
-            error.statusCode = 404;
-            return next(error);   
+            return throwTweetError(next); 
         }
         // Here Tweet Exists ....
 
         //Check if user already retweets this tweet
         const userIndex = tweet.retweets.findIndex(v=> v.toString() === req.user._id.toString());
         if(userIndex === -1){
-            const error = new Error("You can\'t undo retweet this Tweet");
-            error.statusCode = 400;
-            return next(error);   
+            return throwTweetError(next, 'You can\'t undo retweet this Tweet', 400); 
         }        
 
         // Let's undo retweet this ....
@@ -147,9 +132,7 @@ const reply = async (req, res, next) =>{
         const tweet = await Tweet.findById(tweetID);
         
         if (!tweet) {
-            const error = new Error('Tweet you trying to reply on does NOT exist ...');
-            error.statusCode = 404;
-            return next(error);   
+            return throwTweetError(next);
         }
 
         // Here Tweet Exists 
@@ -187,9 +170,7 @@ const quote = async (req, res, next) =>{
         // Check if tweet exists
         const tweet = await Tweet.findById(tweetID);
         if (!tweet) {
-            const error = new Error('Tweet you trying to Quote on does NOT exist ...');
-            error.statusCode = 404;
-            return next(error);   
+            return throwTweetError(next);
         }
 
         const quote = new Tweet({

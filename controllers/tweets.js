@@ -1,5 +1,6 @@
 const Tweet = require('../models/tweet');
 const { isMongooseError, _throw } = require('../utils/errorHandling');
+const { throwTweetError } = require('../utils/tweets');
 
 const createTweet = async (req, res, next) =>{
     let imageUrl;
@@ -66,9 +67,7 @@ const getTweet = async (req, res, next)=>{
     try {
         const tweet = await Tweet.findOne({_id: tweetID}).lean();
         if(!tweet){
-            const error = new Error("No Tweet Found");
-            error.statusCode = 404;
-            return next(error);
+            return throwTweetError(next);
         }
         res.status(200).json({
             tweet
@@ -87,9 +86,7 @@ const deleteTweet = async (req, res, next)=>{
     try {
         const tweet = await Tweet.findOne({_id: tweetID, creator: req.user._id});
         if (!tweet) {
-            const error = new Error('No Tweet matches this ID to Delete');
-            error.statusCode = 404;
-            return next(error);
+            return throwTweetError(next);
         }
         const deleteCursor = await Tweet.deleteOne({_id: tweet._id});
         res.status(200).json({
