@@ -1,5 +1,5 @@
 const User = require('../models/user');
-const {isMongooseError, _throw} = require('../utils/errorHandling');
+const {isMongooseError, throwUserError, _throw} = require('../utils/errorHandling');
 
 // Follow Functionality by sending username in req.body
 const follow = async (req, res, next) =>{
@@ -15,9 +15,7 @@ const follow = async (req, res, next) =>{
         // Check if user exists
         const user = await User.findOne({username: username});
         if (!user) {
-            const error = new Error('This user Doesn\'t Exist');
-            error.statusCode = 404;
-            return next(error);
+            return throwUserError(next);
         }
         // Here..., user exists
         // Lets Check if the loggedin user is already following this user
@@ -61,9 +59,7 @@ const unfollow = async (req, res, next) => {
         // Check if This user exists
         const user = await User.findOne({username: username});
         if (!user) {
-            const error = new Error('This user Doesn\'t Exist');
-            error.statusCode = 404;
-            return next(error);
+            return throwUserError(next);
         }
 
         // Here .... User exists
