@@ -1,6 +1,5 @@
 const Tweet = require('../models/tweet');
-const {isMongooseError, _throw} = require('../utils/errorHandling');
-const {throwTweetError} = require('../utils/tweets');
+const {isMongooseError, throwTweetError, _throw} = require('../utils/errorHandling');
 
 // Like Tweet with ID sent in req.body
 const like = async (req, res, next) => { 
