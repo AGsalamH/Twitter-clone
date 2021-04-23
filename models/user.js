@@ -50,6 +50,7 @@ const userSchema = new Schema({
     { timestamps: true }
 );
 
+// pre hooks
 userSchema.pre('save', async function(next) {
     if(!this.isModified('email')){
         return next();
@@ -74,26 +75,35 @@ userSchema.pre('save', async function(next) {
 });
 
 // To be used in login & signup functionality
-userSchema.statics.emailExists = async function(email){
-    const user = await this.findOne({email: email});
-    if(!user){
-        const error = new mongoose.Error('Email doesn\'t exist!');
-        error.statusCode = 404;
-        throw error;
+userSchema.statics = {
+    emailExists: async function(email){
+        const user = await this.findOne({email: email});
+        if(!user){
+            const error = new mongoose.Error('Email doesn\'t exist!');
+            error.statusCode = 404;
+            throw error;
+        }
+        return user;
     }
-    return user;
-}
+
+};
+
 
 // used in login
-userSchema.methods.comparePassword = async function(password){
-    const isCorrect = await bcrypt.compare(password, this.password);
-    if(!isCorrect){
-        const error = new mongoose.Error('Password isn\'t correct');
-        error.statusCode = 400;
-        throw error;
+userSchema.methods = {
+    comparePassword: async function(password){
+        const isCorrect = await bcrypt.compare(password, this.password);
+        if(!isCorrect){
+            const error = new mongoose.Error('Password isn\'t correct');
+            error.statusCode = 400;
+            throw error;
+        }
+        return isCorrect;
     }
-    return isCorrect;
-}
+
+};
+
+
 
 
 module.exports = mongoose.model('User', userSchema);
